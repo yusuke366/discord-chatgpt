@@ -105,7 +105,7 @@ PERSONA_FILES = {
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/rin.png",
             "chance": 1.0
         }
-    ]
+    ],
 
     "みさき": [
         {
