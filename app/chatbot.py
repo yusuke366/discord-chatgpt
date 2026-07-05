@@ -1,6 +1,6 @@
 import os
 import discord
-import ramdom
+import random
 
 from discord.ext import commands
 from discord import app_commands
