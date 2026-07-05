@@ -139,7 +139,6 @@ async def persona_command(
         ephemeral=True
     )
 
-
 @bot.event
 async def on_ready():
     synced = await bot.tree.sync()
@@ -219,8 +218,8 @@ async def on_message(message):
                 model="gpt-4o-mini",
                 messages=messages
             )
-            reply = response.choices[0].message.content
-            if reply.strip() == "SKIP":
+            reply = response.choices[0].message.content.strip()
+            if reply.upper().startswith("SKIP"):
                 continue
 
             await webhook.send(
