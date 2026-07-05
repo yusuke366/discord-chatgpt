@@ -124,6 +124,30 @@ PERSONA_FILES = {
             name="ソフトウェアエンジニア",
             value="ソフトウェアエンジニア"
         ),
+        app_commands.Choice(
+            name="みさき",
+            value="みさき"
+        ),
+        app_commands.Choice(
+            name="あや",
+            value="あや"
+        ),
+        app_commands.Choice(
+            name="りん",
+            value="りん"
+        ),
+        app_commands.Choice(
+            name="ゆい",
+            value="ゆい"
+        ),
+        app_commands.Choice(
+            name="なぎさ",
+            value="なぎさ"
+        ),
+        app_commands.Choice(
+            name="ことね",
+            value="ことね"
+        ),
     ]
 )
 async def persona_command(
