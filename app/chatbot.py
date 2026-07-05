@@ -1,6 +1,7 @@
 import os
-
 import discord
+import ramdom
+
 from discord.ext import commands
 from discord import app_commands
 
@@ -53,32 +54,38 @@ PERSONA_FILES = {
         {
             "name": "みさき",
             "file": "misaki.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/misaki.png"
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/misaki.png",
+            "chance": 0.9
         },
         {
             "name": "あや",
             "file": "aya.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/aya2.png"
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/aya2.png",
+            "chance": 0.9
         },
         {
             "name": "りん",
             "file": "rin.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/rin.png"
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/rin.png",
+            "chance": 0.5
         },
         {
             "name": "ゆい",
             "file": "yui.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/yui.png"
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/yui.png",
+            "chance": 0.9
         },
         {
             "name": "なぎさ",
             "file": "nagisa.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/nagisa2.png"
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/nagisa2.png",
+            "chance": 0.9
         },
         {
             "name": "ことね",
             "file": "kotone.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/kotone.png"
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/kotone.png",
+            "chance": 0.9
         }
     ],
 
@@ -181,7 +188,14 @@ async def on_message(message):
             )
         history.reverse()        
 
-        for persona in personas:
+        shuffled_personas = random.sample(
+            personas,
+            len(personas)
+        )
+
+        for persona in shuffled_personas:
+            if random.random() > persona["chance"]:
+                continue
 
             system_prompt = load_persona(
                 persona["file"]
@@ -205,6 +219,9 @@ async def on_message(message):
                 model="gpt-4o-mini",
                 messages=messages
             )
+            reply = response.choices[0].message.content
+            if reply.strip() == "SKIP":
+                continue
 
             await webhook.send(
                 content=response.choices[0].message.content,
