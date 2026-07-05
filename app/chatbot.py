@@ -273,6 +273,8 @@ async def on_message(message):
         async for msg in message.channel.history(limit=20):
             if msg.id == message.id:
                 continue
+            if msg.author.bot:
+                continue
             if not msg.content:
                 continue
 
