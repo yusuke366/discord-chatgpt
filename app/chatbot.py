@@ -172,19 +172,31 @@ async def on_message(message):
                 persona["file"]
             )
 
+            messages = [
+                {
+                    "role": "system",
+                    "content": system_prompt
+                }
+            ]
+            history = []
+            async for msg in message.channel.history(limit=20):
+                if msg.author == bot.user:
+                    continue
+                role = "user"
+                history.append(
+                    {
+                        "role": role,
+                        "content": msg.content
+                    }
+                )
+                history.append(msg)
+            history.reverse()
+            messages.extend(history)
+
             response = (
                 client_ai.chat.completions.create(
                     model="gpt-4o-mini",
-                    messages=[
-                        {
-                            "role": "system",
-                            "content": system_prompt
-                        },
-                        {
-                            "role": "user",
-                            "content": message.content
-                        }
-                    ]
+                    messages=messages
                 )
             )
 
