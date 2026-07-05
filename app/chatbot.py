@@ -149,6 +149,9 @@ async def on_message(message):
     if message.author.bot:
         return
 
+    if message.mentions:
+        return
+
     persona_group = channel_personas.get(
         message.channel.id,
         "全員"
