@@ -37,6 +37,16 @@ def load_persona(filename: str) -> str:
     ) as f:
         return f.read()
 
+async def get_webhook(channel):
+    webhooks = await channel.webhooks()
+
+    for webhook in webhooks:
+        if webhook.name == "chatgptbot":
+            return webhook
+
+    return await channel.create_webhook(
+        name="chatgptbot"
+    )
 
 PERSONA_FILES = {
     "女友達": [
