@@ -39,9 +39,54 @@ def load_persona(filename: str) -> str:
 
 
 PERSONA_FILES = {
-    "女友達": "girl_friend.txt",
-    "アシスタント": "assistant.txt",
-    "ソフトウェアエンジニア": "engineer.txt",
+    "女友達": [
+        {
+            "name": "みさき",
+            "file": "misaki.txt",
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/avatars/misaki.png"
+        },
+        {
+            "name": "あや",
+            "file": "aya.txt",
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/avatars/misaki.png"
+        },
+        {
+            "name": "りん",
+            "file": "rin.txt",
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/avatars/misaki.png"
+        },
+        {
+            "name": "ゆい",
+            "file": "yui.txt",
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/avatars/misaki.png"
+        },
+        {
+            "name": "なぎさ",
+            "file": "nagisa.txt",
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/avatars/misaki.png"
+        },
+        {
+            "name": "ことね",
+            "file": "kotone.txt",
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/avatars/misaki.png"
+        }
+    ],
+
+    "アシスタント": [
+        {
+            "name": "なぎさ",
+            "file": "assistant.txt",
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/avatars/misaki.png"
+        }
+    ],
+
+    "ソフトウェアエンジニア": [
+        {
+            "name": "りん",
+            "file": "engineer.txt",
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/avatars/misaki.png"
+        }
+    ]
 }
 
 @bot.tree.command(
@@ -89,59 +134,77 @@ async def on_ready():
     print(f"ログイン成功: {bot.user}")
     print(f"{len(synced)} 個のコマンドを同期しました")
 
-
 @bot.event
 async def on_message(message):
     if message.author.bot:
         return
 
-    persona_name = channel_personas.get(
+    persona_group = channel_personas.get(
         message.channel.id,
         "女友達"
     )
 
-    persona_file = PERSONA_FILES[persona_name]
-    system_prompt = load_persona(persona_file)
+    personas = PERSONA_FILES[
+        persona_group
+    ]
+
+    webhook = await get_webhook(
+        message.channel
+    )
 
     try:
-        response = client_ai.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {
-                    "role": "system",
-                    "content": system_prompt
-                },
-                {
-                    "role": "user",
-                    "content": message.content
-                }
-            ]
-        )
+        for persona in personas:
 
-        await message.channel.send(
-            response.choices[0].message.content
-        )
+            system_prompt = load_persona(
+                persona["file"]
+            )
+
+            response = (
+                client_ai.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": system_prompt
+                        },
+                        {
+                            "role": "user",
+                            "content": message.content
+                        }
+                    ]
+                )
+            )
+
+            await webhook.send(
+                content=response.choices[0].message.content,
+                username=persona["name"],
+                avatar_url=persona["avatar"]
+            )
 
     except RateLimitError:
-        await message.channel.send(
-            "⚠️ OpenAI APIの利用枠が不足しています。"
+        await webhook.send(
+            content="⚠️ OpenAI APIの利用枠が不足しています。",
+            username="システム"
         )
 
     except AuthenticationError:
-        await message.channel.send(
-            "⚠️ OpenAI APIキーが無効です。"
+        await webhook.send(
+            content="⚠️ OpenAI APIキーが無効です。",
+            username="システム"
         )
 
     except APIError:
-        await message.channel.send(
-            "⚠️ OpenAI APIエラーが発生しました。"
+        await webhook.send(
+            content="⚠️ OpenAI APIエラーが発生しました。",
+            username="システム"
         )
 
     except Exception as e:
-        print(f"Unexpected Error: {e}")
+        print(e)
 
-        await message.channel.send(
-            "⚠️ 予期しないエラーが発生しました。"
+        await webhook.send(
+            content="⚠️ 予期しないエラーが発生しました。",
+            username="システム"
         )
 
 bot.run(DISCORD_TOKEN)
