@@ -166,38 +166,50 @@ async def on_message(message):
     )
 
     try:
+        history = []
+        async for msg in message.channel.history(limit=20):
+            if msg.id == message.id:
+                continue
+            if not msg.content:
+                continue
+
+            history.append(
+                {
+                    "role": "user",
+                    "content": (
+                        f"発言者:{msg.author.display_name}\n"
+                        f"内容:{msg.content}"
+                    )
+                }
+            )
+        history.reverse()        
+
         for persona in personas:
 
             system_prompt = load_persona(
                 persona["file"]
             )
-
             messages = [
                 {
                     "role": "system",
                     "content": system_prompt
                 }
             ]
-            history = []
-            async for msg in message.channel.history(limit=20):
-                if msg.author == bot.user:
-                    continue
-                role = "user"
-                history.append(
-                    {
-                        "role": role,
-                        "content": msg.content
-                    }
-                )
-                history.append(msg)
-            history.reverse()
             messages.extend(history)
 
-            response = (
-                client_ai.chat.completions.create(
-                    model="gpt-4o-mini",
-                    messages=messages
-                )
+            messages.append(
+                {
+                    "role": "user",
+                    "content": (
+                        f"発言者:{message.author.display_name}\n"
+                        f"内容:{message.content}"
+                    )
+                }
+            )
+
+            response = client_ai.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=messages
             )
 
             await webhook.send(
