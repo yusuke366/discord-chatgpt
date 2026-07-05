@@ -176,10 +176,7 @@ async def on_message(message):
             history.append(
                 {
                     "role": "user",
-                    "content": (
-                        f"発言者:{msg.author.display_name}\n"
-                        f"内容:{msg.content}"
-                    )
+                    "content": msg.content
                 }
             )
         history.reverse()        
@@ -200,10 +197,7 @@ async def on_message(message):
             messages.append(
                 {
                     "role": "user",
-                    "content": (
-                        f"発言者:{message.author.display_name}\n"
-                        f"内容:{message.content}"
-                    )
+                    "content": message.content
                 }
             )
 
