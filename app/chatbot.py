@@ -58,35 +58,35 @@ PERSONA_FILES = {
         {
             "name": "あや",
             "file": "aya.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/misaki.png"
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/aya.png"
         },
         {
             "name": "りん",
             "file": "rin.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/misaki.png"
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/rin.png"
         },
         {
             "name": "ゆい",
             "file": "yui.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/misaki.png"
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/yui.png"
         },
         {
             "name": "なぎさ",
             "file": "nagisa.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/misaki.png"
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/nagisa.png"
         },
         {
             "name": "ことね",
             "file": "kotone.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/misaki.png"
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/kotone.png"
         }
     ],
 
     "アシスタント": [
         {
-            "name": "なぎさ",
+            "name": "あや",
             "file": "assistant.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/misaki.png"
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/aya.png"
         }
     ],
 
@@ -94,7 +94,7 @@ PERSONA_FILES = {
         {
             "name": "りん",
             "file": "engineer.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/misaki.png"
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/rin.png"
         }
     ]
 }
