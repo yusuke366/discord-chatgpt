@@ -86,7 +86,7 @@ PERSONA_FILES = {
         {
             "name": "あや",
             "file": "assistant.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/aya.png"
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/aya2.png"
         }
     ],
 
