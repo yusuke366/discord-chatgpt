@@ -55,37 +55,37 @@ PERSONA_FILES = {
             "name": "みさき",
             "file": "misaki.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/misaki.png",
-            "chance": 0.9
+            "chance": 0.8
         },
         {
             "name": "あや",
             "file": "aya.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/aya2.png",
-            "chance": 0.9
+            "chance": 1.0
         },
         {
             "name": "りん",
             "file": "rin.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/rin.png",
-            "chance": 0.5
+            "chance": 1.0
         },
         {
             "name": "ゆい",
             "file": "yui.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/yui.png",
-            "chance": 0.9
+            "chance": 1.0
         },
         {
             "name": "なぎさ",
             "file": "nagisa.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/nagisa2.png",
-            "chance": 0.9
+            "chance": 0.8
         },
         {
             "name": "ことね",
             "file": "kotone.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/kotone.png",
-            "chance": 0.9
+            "chance": 0.8
         }
     ],
 
@@ -93,7 +93,8 @@ PERSONA_FILES = {
         {
             "name": "あや",
             "file": "assistant.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/aya2.png"
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/aya2.png",
+            "chance": 1.0
         }
     ],
 
@@ -101,9 +102,64 @@ PERSONA_FILES = {
         {
             "name": "りん",
             "file": "engineer.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/rin.png"
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/rin.png",
+            "chance": 1.0
         }
     ]
+
+    "みさき": [
+        {
+            "name": "みさき",
+            "file": "misaki.txt",
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/misaki.png",
+            "chance": 1.0
+        }
+    ],
+
+    "あや": [
+        {
+            "name": "あや",
+            "file": "aya.txt",
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/aya2.png",
+            "chance": 1.0
+        }
+    ],
+
+    "りん": [
+        {
+            "name": "りん",
+            "file": "rin.txt",
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/rin.png",
+            "chance": 1.0
+        }
+    ],
+
+    "ゆい": [
+        {
+            "name": "ゆい",
+            "file": "yui.txt",
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/yui.png",
+            "chance": 1.0
+        }
+    ],
+
+    "なぎさ": [
+        {
+            "name": "なぎさ",
+            "file": "nagisa.txt",
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/nagisa2.png",
+            "chance": 1.0
+        }
+    ],
+
+    "ことね": [
+        {
+            "name": "ことね",
+            "file": "kotone.txt",
+            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/kotone.png",
+            "chance": 1.0
+        }
+    ],
 }
 
 @bot.tree.command(
