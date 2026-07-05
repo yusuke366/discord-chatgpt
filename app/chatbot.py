@@ -49,7 +49,7 @@ async def get_webhook(channel):
     )
 
 PERSONA_FILES = {
-    "女友達": [
+    "全員": [
         {
             "name": "みさき",
             "file": "misaki.txt",
@@ -106,8 +106,8 @@ PERSONA_FILES = {
 @app_commands.choices(
     persona=[
         app_commands.Choice(
-            name="女友達",
-            value="女友達"
+            name="全員",
+            value="全員"
         ),
         app_commands.Choice(
             name="アシスタント",
@@ -151,7 +151,7 @@ async def on_message(message):
 
     persona_group = channel_personas.get(
         message.channel.id,
-        "女友達"
+        "全員"
     )
 
     personas = PERSONA_FILES[
