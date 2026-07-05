@@ -241,6 +241,7 @@ async def on_ready():
     print("登録コマンド:")
     for cmd in synced:
         print(f"- {cmd.name}")
+        print(cmd.to_dict())
 
     print(f"ログイン成功: {bot.user}")
     print(f"{len(synced)} 個のコマンドを同期しました")
@@ -314,9 +315,6 @@ async def on_message(message):
                 model="gpt-4o-mini",
                 messages=messages
             )
-            reply = response.choices[0].message.content.strip()
-            if reply.upper().startswith("SKIP"):
-                continue
 
             await webhook.send(
                 content=response.choices[0].message.content,
