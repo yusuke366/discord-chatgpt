@@ -169,6 +169,10 @@ PERSONA_FILES = {
 @app_commands.choices(
     persona=[
         app_commands.Choice(
+            name="なし",
+            value="なし"
+        ),
+        app_commands.Choice(
             name="全員",
             value="全員"
         ),
@@ -210,10 +214,21 @@ async def persona_command(
     interaction: discord.Interaction,
     persona: app_commands.Choice[str]
 ):
+    if persona.value == "なし":
+        channel_personas.pop(
+            interaction.channel_id,
+            None
+        )
+        await interaction.response.send_message(
+            "人格設定を解除しました。",
+            ephemeral=True
+        )
+
+        return
+
     channel_personas[
         interaction.channel_id
     ] = persona.value
-
     await interaction.response.send_message(
         f"人格を {persona.value} に変更しました。",
         ephemeral=True
