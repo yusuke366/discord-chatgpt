@@ -55,37 +55,37 @@ PERSONA_FILES = {
             "name": "みさき",
             "file": "misaki.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/misaki.png",
-            "chance": 0.8
+            "chance": 0.5
         },
         {
             "name": "あや",
             "file": "aya.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/aya2.png",
-            "chance": 1.0
+            "chance": 0.5
         },
         {
             "name": "りん",
             "file": "rin.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/rin.png",
-            "chance": 1.0
+            "chance": 0.5
         },
         {
             "name": "ゆい",
             "file": "yui.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/yui.png",
-            "chance": 1.0
+            "chance": 0.5
         },
         {
             "name": "なぎさ",
             "file": "nagisa.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/nagisa2.png",
-            "chance": 0.8
+            "chance": 0.5
         },
         {
             "name": "ことね",
             "file": "kotone.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/kotone.png",
-            "chance": 0.8
+            "chance": 0.5
         }
     ],
 
@@ -239,9 +239,10 @@ async def on_message(message):
         return
 
     persona_group = channel_personas.get(
-        message.channel.id,
-        "全員"
+        message.channel.id
     )
+    if persona_group is None:
+        return
 
     personas = PERSONA_FILES[
         persona_group
