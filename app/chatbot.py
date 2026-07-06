@@ -49,43 +49,44 @@ async def get_webhook(channel):
         name="chatgptbot"
     )
 
+chance_for_all = 0.3
 PERSONA_FILES = {
     "全員": [
         {
             "name": "みさき",
             "file": "misaki.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/misaki.png",
-            "chance": 0.5
+            "chance": chance_for_all
         },
         {
             "name": "あや",
             "file": "aya.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/aya2.png",
-            "chance": 0.5
+            "chance": chance_for_all
         },
         {
             "name": "りん",
             "file": "rin.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/rin.png",
-            "chance": 0.5
+            "chance": chance_for_all
         },
         {
             "name": "ゆい",
             "file": "yui.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/yui.png",
-            "chance": 0.5
+            "chance": chance_for_all
         },
         {
             "name": "なぎさ",
             "file": "nagisa.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/nagisa2.png",
-            "chance": 0.5
+            "chance": chance_for_all
         },
         {
             "name": "ことね",
             "file": "kotone.txt",
             "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/kotone.png",
-            "chance": 0.5
+            "chance": chance_for_all
         }
     ],
 
