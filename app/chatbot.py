@@ -338,6 +338,13 @@ async def on_message(message):
             
             except Exception as e:
                 print(f"URL取得失敗: {e}")
+        
+        #画像が投稿された場合
+        images = []
+        for attachment in message.attachments:
+            if attachment.content_type and \
+            attachment.content_type.startswith("image/"):
+                images.append(attachment.url)
 
         shuffled_personas = random.sample(
             personas,
@@ -371,6 +378,29 @@ async def on_message(message):
                     {
                         "role": "user",
                         "content": f"共有されたURLの要約:\n{summary}"
+                    }
+                )
+
+            if images:
+                image_content = [
+                    {
+                        "type": "text",
+                        "text": "画像が投稿されました"
+                    }
+                ]
+                for image_url in images:
+                    image_content.append(
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": image_url
+                            }
+                        }
+                    )
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": image_content
                     }
                 )
 
