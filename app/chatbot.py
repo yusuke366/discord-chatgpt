@@ -1,6 +1,8 @@
 import os
 import discord
 import random
+import re
+import requests
 
 from discord.ext import commands
 from discord import app_commands
@@ -12,6 +14,7 @@ from openai import (
     APIError,
     AuthenticationError,
 )
+from bs4 import BeautifulSoup
 
 load_dotenv()
 
@@ -235,6 +238,27 @@ async def persona_command(
         ephemeral=True
     )
 
+def fetch_url_content(url):
+    response = requests.get(
+        url,
+        timeout=10,
+        headers={
+            "User-Agent": "Mozilla/5.0"
+        }
+    )
+
+    response.raise_for_status()
+
+    soup = BeautifulSoup(
+        response.text,
+        "html.parser"
+    )
+
+    return soup.get_text(
+        separator=" ",
+        strip=True
+    )[:2000]
+
 @bot.event
 async def on_ready():
     synced = await bot.tree.sync()
@@ -287,15 +311,50 @@ async def on_message(message):
             )
         history.reverse()        
 
+        #メッセージにURLが含まれる場合は要約
+        summary = None
+        urls = re.findall(
+            r'https?://\S+',
+            message.content
+        )
+        if urls:
+            url = urls[0]
+            try:
+                article_text = fetch_url_content(url)
+                summary_response = client_ai.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": "以下の記事を200文字程度で要約してください。"
+                        },
+                        {
+                            "role": "user",
+                            "content": article_text
+                        }
+                    ]
+                )
+                summary = summary_response.choices[0].message.content
+            
+            except Exception as e:
+                print(f"URL取得失敗: {e}")
+
         shuffled_personas = random.sample(
             personas,
             len(personas)
         )
 
+        selected_personas = []
         for persona in shuffled_personas:
-            if random.random() > persona["chance"]:
-                continue
+            if random.random() <= persona["chance"]:
+                selected_personas.append(persona)
 
+        if not selected_personas:
+            selected_personas.append(
+                shuffled_personas[0]
+            )
+
+        for persona in selected_personas:
             system_prompt = load_persona(
                 persona["file"]
             )
@@ -306,6 +365,14 @@ async def on_message(message):
                 }
             ]
             messages.extend(history)
+
+            if summary:
+                messages.append(
+                    {
+                        "role": "user",
+                        "content": f"共有されたURLの要約:\n{summary}"
+                    }
+                )
 
             messages.append(
                 {
