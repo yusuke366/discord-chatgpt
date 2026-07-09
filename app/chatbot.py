@@ -43,8 +43,15 @@ def load_persona(filename: str) -> str:
 
 WEBHOOK_CACHE = {}
 async def get_webhook(channel):
-    if channel.id in WEBHOOK_CACHE:
-        return WEBHOOK_CACHE[channel.id]
+    webhook = WEBHOOK_CACHE.get(
+        channel.id
+    )
+    if webhook:
+        try:
+            await webhook.fetch()
+            return webhook
+        except Exception:
+            pass
 
     webhooks = await channel.webhooks()
     for webhook in webhooks:
