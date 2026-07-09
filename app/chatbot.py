@@ -41,16 +41,23 @@ def load_persona(filename: str) -> str:
     ) as f:
         return f.read()
 
+WEBHOOK_CACHE = {}
 async def get_webhook(channel):
-    webhooks = await channel.webhooks()
+    if channel.id in WEBHOOK_CACHE:
+        return WEBHOOK_CACHE[channel.id]
 
+    webhooks = await channel.webhooks()
     for webhook in webhooks:
         if webhook.name == "chatgptbot":
+            WEBHOOK_CACHE[channel.id] = webhook
             return webhook
 
-    return await channel.create_webhook(
+    webhook = await channel.create_webhook(
         name="chatgptbot"
     )
+    WEBHOOK_CACHE[channel.id] = webhook
+
+    return webhook
 
 chance_for_all = 0.3
 PERSONA_FILES = {
