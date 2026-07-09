@@ -331,6 +331,7 @@ async def fetch_url_content(url):
             )
             return text[:2000]
 
+restored = False
 @bot.event
 async def on_ready():
     synced = await bot.tree.sync()
@@ -339,20 +340,21 @@ async def on_ready():
     for cmd in synced:
         logging.info(f"- {cmd.name}")
 
-
+    global restored
     for channel_id, persona in channel_personas.items():
         channel = bot.get_channel(channel_id)
         if channel is None:
             continue
 
-        try:
-            await channel.send(
-                f"🔄 再起動後の人格設定を復元しました: {persona}"
-            )
-        except Exception as e:
-            logging.error(
-                f"チャンネル {channel_id} への通知失敗: {e}"
-            )
+        if not restored:
+            try:
+                await channel.send(
+                    f"🔄 再起動後の人格設定を復元しました: {persona}"
+                )
+            except Exception as e:
+                logging.error(
+                    f"チャンネル {channel_id} への通知失敗: {e}"
+                )
 
     print(f"ログイン成功: {bot.user}")
     logging.info(f"ログイン成功: {bot.user}")
