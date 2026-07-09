@@ -5,6 +5,7 @@ import re
 import requests
 import aiohttp
 import logging
+import json
 
 from discord.ext import commands
 from discord import app_commands
@@ -32,9 +33,6 @@ bot = commands.Bot(
     command_prefix="!",
     intents=intents,
 )
-
-# チャンネルごとの人格設定
-channel_personas = {}
 
 def load_persona(filename: str) -> str:
     with open(
@@ -72,6 +70,35 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(message)s"
 )
+
+PERSONA_SAVE_FILE = "channel_personas.json"
+def load_channel_personas():
+    try:
+        with open(
+            PERSONA_SAVE_FILE,
+            encoding="utf-8"
+        ) as f:
+            data = json.load(f)
+
+            return {
+                int(k): v
+                for k, v in data.items()
+            }
+    except FileNotFoundError:
+        return {}
+
+def save_channel_personas():
+    with open(
+        PERSONA_SAVE_FILE,
+        "w",
+        encoding="utf-8"
+    ) as f:
+        json.dump(
+            channel_personas,
+            f,
+            ensure_ascii=False,
+            indent=2
+        )
 
 chance_for_all = 0.3
 PERSONA_FILES = {
@@ -244,6 +271,8 @@ async def persona_command(
             interaction.channel_id,
             None
         )
+        save_channel_personas()
+
         await interaction.response.send_message(
             "人格設定を解除しました。",
             ephemeral=True
@@ -254,6 +283,8 @@ async def persona_command(
     channel_personas[
         interaction.channel_id
     ] = persona.value
+    save_channel_personas()
+
     await interaction.response.send_message(
         f"人格を {persona.value} に変更しました。",
         ephemeral=True
@@ -308,6 +339,22 @@ async def on_ready():
     for cmd in synced:
         logging.info(f"- {cmd.name}")
 
+
+    for channel_id, persona in channel_personas.items():
+        channel = bot.get_channel(channel_id)
+        if channel is None:
+            continue
+
+        try:
+            await channel.send(
+                f"🔄 再起動後の人格設定を復元しました: {persona}"
+            )
+        except Exception as e:
+            logging.error(
+                f"チャンネル {channel_id} への通知失敗: {e}"
+            )
+
+    print(f"ログイン成功: {bot.user}")
     logging.info(f"ログイン成功: {bot.user}")
     logging.info(f"{len(synced)} 個のコマンドを同期しました")
 
@@ -377,7 +424,7 @@ async def on_message(message):
                 summary = summary_response.choices[0].message.content
             
             except Exception as e:
-                logging.info(f"URL取得失敗: {e}")
+                logging.error(f"URL取得失敗: {e}")
         
         #画像が投稿された場合
         images = []
@@ -465,7 +512,7 @@ async def on_message(message):
                 username=persona["name"],
                 avatar_url=persona["avatar"]
             )
-            logging.info(f"{persona["name"]} の回答しました")
+            logging.info(f"{persona["name"]} が回答しました")
 
 
     except RateLimitError:
@@ -487,11 +534,15 @@ async def on_message(message):
         )
 
     except Exception as e:
-        logging.info(e)
+        logging.exception(e)
 
         await webhook.send(
             content="⚠️ 予期しないエラーが発生しました。",
             username="システム"
         )
+
+# 初期設定
+# チャンネルごとの人格設定
+channel_personas = load_channel_personas()
 
 bot.run(DISCORD_TOKEN)
