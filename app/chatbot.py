@@ -404,7 +404,7 @@ async def on_message(message):
             )
 
         for persona in selected_personas:
-            logging.info(f"{persona.name} が回答します")
+            logging.info(f"{persona["name"]} が回答します")
 
             system_prompt = load_persona(
                 persona["file"]
@@ -465,7 +465,7 @@ async def on_message(message):
                 username=persona["name"],
                 avatar_url=persona["avatar"]
             )
-            logging.info(f"{persona.name} の回答しました")
+            logging.info(f"{persona["name"]} の回答しました")
 
 
     except RateLimitError:
