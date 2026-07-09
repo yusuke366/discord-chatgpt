@@ -301,7 +301,6 @@ async def on_ready():
     print("登録コマンド:")
     for cmd in synced:
         print(f"- {cmd.name}")
-        print(cmd.to_dict())
 
     print(f"ログイン成功: {bot.user}")
     print(f"{len(synced)} 個のコマンドを同期しました")
