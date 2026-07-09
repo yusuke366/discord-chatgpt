@@ -3,6 +3,7 @@ import discord
 import random
 import re
 import requests
+import aiohttp
 
 from discord.ext import commands
 from discord import app_commands
@@ -273,6 +274,26 @@ def fetch_url_content(url):
         strip=True
     )[:2000]
 
+async def fetch_url_content(url):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(
+            url,
+            timeout=10,
+            headers={
+                "User-Agent": "Mozilla/5.0"
+            }
+        ) as response:
+            html = await response.text()
+            soup = BeautifulSoup(
+                html,
+                "html.parser"
+            )
+            text = soup.get_text(
+                separator=" ",
+                strip=True
+            )
+            return text[:2000]
+
 @bot.event
 async def on_ready():
     synced = await bot.tree.sync()
@@ -334,7 +355,7 @@ async def on_message(message):
         if urls:
             url = urls[0]
             try:
-                article_text = fetch_url_content(url)
+                article_text = await fetch_url_content(url)
                 summary_response = client_ai.chat.completions.create(
                     model="gpt-4o-mini",
                     messages=[
