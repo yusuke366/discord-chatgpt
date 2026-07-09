@@ -4,6 +4,7 @@ import random
 import re
 import requests
 import aiohttp
+import logging
 
 from discord.ext import commands
 from discord import app_commands
@@ -66,6 +67,11 @@ async def get_webhook(channel):
     WEBHOOK_CACHE[channel.id] = webhook
 
     return webhook
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s"
+)
 
 chance_for_all = 0.3
 PERSONA_FILES = {
@@ -298,12 +304,12 @@ async def fetch_url_content(url):
 async def on_ready():
     synced = await bot.tree.sync()
 
-    print("登録コマンド:")
+    logging.info("登録コマンド:")
     for cmd in synced:
-        print(f"- {cmd.name}")
+        logging.info(f"- {cmd.name}")
 
-    print(f"ログイン成功: {bot.user}")
-    print(f"{len(synced)} 個のコマンドを同期しました")
+    logging.info(f"ログイン成功: {bot.user}")
+    logging.info(f"{len(synced)} 個のコマンドを同期しました")
 
 @bot.event
 async def on_message(message):
@@ -371,7 +377,7 @@ async def on_message(message):
                 summary = summary_response.choices[0].message.content
             
             except Exception as e:
-                print(f"URL取得失敗: {e}")
+                logging.info(f"URL取得失敗: {e}")
         
         #画像が投稿された場合
         images = []
@@ -477,7 +483,7 @@ async def on_message(message):
         )
 
     except Exception as e:
-        print(e)
+        logging.info(e)
 
         await webhook.send(
             content="⚠️ 予期しないエラーが発生しました。",
