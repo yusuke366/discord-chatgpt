@@ -58,37 +58,37 @@ PERSONA_FILES = {
         {
             "name": "みさき",
             "file": "misaki.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/misaki.png",
+            "avatar": "https://yusuke366.github.io/discord-chatgpt/avatars/misaki.png",
             "chance": chance_for_all
         },
         {
             "name": "あや",
             "file": "aya.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/aya2.png",
+            "avatar": "https://yusuke366.github.io/discord-chatgpt/avatars/aya.png",
             "chance": chance_for_all
         },
         {
             "name": "りん",
             "file": "rin.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/rin.png",
+            "avatar": "https://yusuke366.github.io/discord-chatgpt/avatars/rin.png",
             "chance": chance_for_all
         },
         {
             "name": "ゆい",
             "file": "yui.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/yui.png",
+            "avatar": "https://yusuke366.github.io/discord-chatgpt/avatars/yui.png",
             "chance": chance_for_all
         },
         {
             "name": "なぎさ",
             "file": "nagisa.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/nagisa2.png",
+            "avatar": "https://yusuke366.github.io/discord-chatgpt/avatars/nagisa.png",
             "chance": chance_for_all
         },
         {
             "name": "ことね",
             "file": "kotone.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/kotone.png",
+            "avatar": "https://yusuke366.github.io/discord-chatgpt/avatars/kotone.png",
             "chance": chance_for_all
         }
     ],
@@ -97,7 +97,7 @@ PERSONA_FILES = {
         {
             "name": "あや",
             "file": "assistant.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/aya2.png",
+            "avatar": "https://yusuke366.github.io/discord-chatgpt/avatars/aya.png",
             "chance": 1.0
         }
     ],
@@ -106,7 +106,7 @@ PERSONA_FILES = {
         {
             "name": "りん",
             "file": "engineer.txt",
-            "avatar": "https://raw.githubusercontent.com/yusuke366/discord-chatgpt/main/app/personas/avatars/rin.png",
+            "avatar": "https://yusuke366.github.io/discord-chatgpt/avatars/rin.png",
             "chance": 1.0
         }
     ],
@@ -353,7 +353,9 @@ async def on_message(message):
 
         selected_personas = []
         for persona in shuffled_personas:
-            if random.random() <= persona["chance"]:
+            if persona["name"] in message.content:
+                selected_personas.append(persona)
+            elif random.random() <= persona["chance"]:
                 selected_personas.append(persona)
 
         if not selected_personas:
