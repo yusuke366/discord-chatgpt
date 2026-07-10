@@ -18,6 +18,7 @@ from openai import (
     AuthenticationError,
 )
 from bs4 import BeautifulSoup
+from typing import Optional
 
 load_dotenv()
 
@@ -324,8 +325,23 @@ PERSONA_FILES = {
 )
 async def persona_command(
     interaction: discord.Interaction,
-    persona: app_commands.Choice[str]
+    persona: Optional[app_commands.Choice[str]] = None
 ):
+    if persona is None:
+        current = channel_personas.get(
+            interaction.channel_id
+        )
+        if current is None:
+            message = "現在の人格設定: なし"
+        else:
+            message = f"現在の人格設定: {current}"
+
+        await interaction.response.send_message(
+            message,
+            ephemeral=True
+        )
+        return
+
     if persona.value == "なし":
         channel_personas.pop(
             interaction.channel_id,
@@ -337,7 +353,6 @@ async def persona_command(
             "人格設定を解除しました。",
             ephemeral=True
         )
-
         return
 
     channel_personas[
@@ -391,7 +406,6 @@ async def fetch_url_content(url):
             )
             return text[:2000]
 
-restored = False
 @bot.event
 async def on_ready():
     synced = await bot.tree.sync()
@@ -400,21 +414,12 @@ async def on_ready():
     for cmd in synced:
         logging.info(f"- {cmd.name}")
 
-    global restored
     for channel_id, persona in channel_personas.items():
         channel = bot.get_channel(channel_id)
         if channel is None:
             continue
 
-        if not restored:
-            try:
-                await channel.send(
-                    f"🔄 再起動後の人格設定を復元しました: {persona}"
-                )
-            except Exception as e:
-                logging.error(
-                    f"チャンネル {channel_id} への通知失敗: {e}"
-                )
+        logging.info(f"再起動後の人格設定を復元しました: {channel_id}/{persona}")
 
     print(f"ログイン成功: {bot.user}")
     logging.info(f"ログイン成功: {bot.user}")
