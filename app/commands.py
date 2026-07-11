@@ -4,15 +4,19 @@ import discord
 from discord import app_commands
 
 from .personas import channel_personas, save_channel_personas
+from .model import channel_models, save_channel_models
 
 try:
     from .personas import channel_personas, save_channel_personas
+    from .model import channel_models, save_channel_models
 except ImportError:
     from personas import channel_personas, save_channel_personas
-
+    from model import channel_models, save_channel_models
 
 def setup_commands(bot):
     @bot.tree.command(name="persona", description="人格を変更します")
+    @bot.tree.command(name="model", description="使用するモデルを変更します")
+
     @app_commands.choices(
         persona=[
             app_commands.Choice(name="なし", value="なし"),
@@ -53,4 +57,52 @@ def setup_commands(bot):
 
         await interaction.response.send_message(
             f"人格を {persona.value} に変更しました。", ephemeral=True
+        )
+
+    @app_commands.choices(
+        [
+            app_commands.Choice(
+                name="gpt-5.6-sol",
+                value="gpt-5.6-sol"
+            ),
+            app_commands.Choice(
+                name="gpt-5.6-terra",
+                value="gpt-5.6-terra"
+            ),
+            app_commands.Choice(
+                name="gpt-5.6-luna",
+                value="gpt-5.6-luna"
+            ),
+            app_commands.Choice(
+                name="gpt-4o",
+                value="gpt-4o"
+            ),
+            app_commands.Choice(
+                name="gpt-4o-mini",
+                value="gpt-4o-mini"
+            ),
+        ]
+    )
+    async def model_command(
+        interaction: discord.Interaction,
+        model: app_commands.Choice[str] = None
+    ):
+        if model is None:
+            current_model = channel_models.get(
+                interaction.channel_id,
+                "gpt-4o-mini"
+            )
+
+            await interaction.response.send_message(
+                f"現在のモデル: {current_model}",
+                ephemeral=True
+            )
+            return
+
+        channel_models[interaction.channel_id] = model.value
+        save_channel_models(channel_models)
+
+        await interaction.response.send_message(
+            f"モデルを {model.value} に変更しました。",
+            ephemeral=True
         )

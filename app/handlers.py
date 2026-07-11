@@ -8,15 +8,18 @@ from openai import APIError, AuthenticationError, RateLimitError
 
 from .personas import channel_personas, load_persona
 from .constants import PERSONA_FILES
+from .model import channel_models
 from .webhooks import get_webhook
 
 try:
     from .personas import channel_personas, load_persona
     from .constants import PERSONA_FILES
+    from .model import channel_models
     from .webhooks import get_webhook
 except ImportError:
     from personas import channel_personas, load_persona
     from constants import PERSONA_FILES
+    from model import channel_models
     from webhooks import get_webhook
 
 
@@ -69,8 +72,16 @@ async def process_message(bot, message, client_ai):
     persona_group = channel_personas.get(message.channel.id)
     if persona_group is None:
         return
-
     personas = PERSONA_FILES[persona_group]
+
+    current_model = channel_models.get(
+        message.channel.id,
+        "gpt-4o-mini"
+    )
+    response = client_ai.chat.completions.create(
+        model=current_model,
+        messages=messages
+    )
 
     webhook = await get_webhook(message.channel)
 
@@ -94,7 +105,7 @@ async def process_message(bot, message, client_ai):
             try:
                 article_text = await fetch_url_content(url)
                 summary_response = client_ai.chat.completions.create(
-                    model="gpt-4o-mini",
+                    model=current_model,
                     messages=[
                         {
                             "role": "system",
@@ -156,7 +167,7 @@ async def process_message(bot, message, client_ai):
             messages.append({"role": "user", "content": message.content})
 
             response = client_ai.chat.completions.create(
-                model="gpt-4o-mini",
+                model=current_model,
                 messages=messages,
             )
 
