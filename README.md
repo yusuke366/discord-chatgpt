@@ -257,8 +257,8 @@ After=network.target
 
 [Service]
 User=yusuke
-WorkingDirectory=/home/yusuke/git/denki/discord-chatgpt/app
-ExecStart=/home/yusuke/.venv/bin/python3 /home/yusuke/git/denki/discord-chatgpt/app/chatbot.py
+WorkingDirectory=/home/yusuke/git/denki/discord-chatgpt
+ExecStart=/home/yusuke/.venv/bin/python3 -m app.chatbot
 Restart=always
 
 [Install]
