@@ -78,10 +78,6 @@ async def process_message(bot, message, client_ai):
         message.channel.id,
         "gpt-4o-mini"
     )
-    response = client_ai.chat.completions.create(
-        model=current_model,
-        messages=messages
-    )
 
     webhook = await get_webhook(message.channel)
 
