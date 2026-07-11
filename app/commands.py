@@ -15,8 +15,6 @@ except ImportError:
 
 def setup_commands(bot):
     @bot.tree.command(name="persona", description="人格を変更します")
-    @bot.tree.command(name="model", description="使用するモデルを変更します")
-
     @app_commands.choices(
         persona=[
             app_commands.Choice(name="なし", value="なし"),
@@ -59,8 +57,9 @@ def setup_commands(bot):
             f"人格を {persona.value} に変更しました。", ephemeral=True
         )
 
+    @bot.tree.command(name="model", description="使用するモデルを変更します")
     @app_commands.choices(
-        [
+        model=[
             app_commands.Choice(
                 name="gpt-5.6-sol",
                 value="gpt-5.6-sol"
