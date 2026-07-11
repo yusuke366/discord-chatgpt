@@ -87,15 +87,13 @@ def setup_commands(bot):
         model: app_commands.Choice[str] = None
     ):
         if model is None:
-            current_model = channel_models.get(
-                interaction.channel_id,
-                "gpt-4o-mini"
-            )
-
-            await interaction.response.send_message(
-                f"現在のモデル: {current_model}",
-                ephemeral=True
-            )
+            current = channel_models.get(interaction.channel_id)
+            if current is None:
+                current = channel_models.get(
+                    interaction.channel_id,
+                    "gpt-4o-mini"
+                )
+            await interaction.response.send_message(f"現在のモデル設定: {current}", ephemeral=True)
             return
 
         channel_models[interaction.channel_id] = model.value

@@ -48,8 +48,13 @@ def setup_event_handlers(bot, client_ai):
             channel = bot.get_channel(channel_id)
             if channel is None:
                 continue
-
             logging.info(f"再起動後の人格設定を復元しました: {channel_id}/{persona}")
+
+        for channel_id, model in channel_models.items():
+            channel = bot.get_channel(channel_id)
+            if channel is None:
+                continue
+            logging.info(f"再起動後のモデル設定を復元しました: {channel_id}/{model}")
 
         print(f"ログイン成功: {bot.user}")
         logging.info(f"ログイン成功: {bot.user}")
